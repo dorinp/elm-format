@@ -337,7 +337,7 @@ formatModule elmVersion modu =
       stack1 $
         initialComments'
           ++ (formatModuleHeader elmVersion modu)
-          : maybeToList (formatModuleBody 2 elmVersion modu)
+          : maybeToList (formatModuleBody 1 elmVersion modu)
 
 
 formatModuleBody :: Int -> ElmVersion -> AST.Module.Module -> Maybe Box
@@ -794,7 +794,7 @@ formatDefinition elmVersion name args comments expr =
         , [ formatExpression elmVersion SyntaxSeparated expr ]
         ]
   in
-    ElmStructure.definition "=" True
+    ElmStructure.definition "=" False
       (formatPattern elmVersion True name)
       (map (\(x,y) -> formatCommented' x (formatPattern elmVersion True) y) args)
       body
@@ -1077,12 +1077,12 @@ formatExpression elmVersion context aexpr =
 
         AST.Expression.Let defs bodyComments expr ->
             let
-                spacer first _ =
-                    case first of
-                        AST.Expression.LetDefinition _ _ _ _ ->
-                            [ blankLine ]
-                        _ ->
-                            []
+                spacer first _ = []
+                    -- case first of
+                    --     AST.Expression.LetDefinition _ _ _ _ ->
+                    --         [ blankLine ]
+                    --     _ ->
+                    --         []
 
                 formatDefinition' def =
                   case def of
@@ -1102,10 +1102,11 @@ formatExpression elmVersion context aexpr =
                             |> map indent
                         )
                     |> andThen
-                        [ line $ keyword "in"
-                        , stack1 $
-                            (map formatComment bodyComments)
-                            ++ [formatExpression elmVersion SyntaxSeparated expr]
+                        [ 
+                          stack1 $
+                            [ line $ keyword "in" ]
+                            ++ (map formatComment bodyComments)
+                            ++ [ formatExpression elmVersion SyntaxSeparated expr ]
                         ]
                     |> expressionParens AmbiguousEnd context -- TODO: not tested
 
@@ -1132,6 +1133,15 @@ formatExpression elmVersion context aexpr =
                               , line $ keyword "of"
                               ]
 
+                formatCasePattern pat = (formatPattern elmVersion False $ (\(Commented _ x _) -> x) pat) |> negativeCasePatternWorkaround pat
+
+                len pat = case formatCasePattern pat of
+                                        SingleLine l -> lineLength 0 l
+                                        _            -> 0
+
+                maxLen = map (len . fst) clauses |> List.maximum
+
+
                 clause (pat, expr) =
                     case
                       ( pat
@@ -1142,6 +1152,10 @@ formatExpression elmVersion context aexpr =
                       , formatHeadCommentedStack (formatExpression elmVersion SyntaxSeparated) expr
                       )
                     of
+                        (_, _, SingleLine pat', SingleLine body') ->
+                            stack1
+                                [ line $ row $ [ pat', space ] ++ List.replicate (maxLen - (lineLength 0 pat')) space ++ [keyword "->", space, body']  ]
+
                         (_, _, SingleLine pat', body') ->
                             stack1
                                 [ line $ row [ pat', space, keyword "->"]
@@ -1159,12 +1173,13 @@ formatExpression elmVersion context aexpr =
                               , line $ keyword "->"
                               , indent body'
                               ]
+
             in
                 opening
                     |> andThen
                         (clauses
                             |> map clause
-                            |> List.intersperse blankLine
+                            -- |> List.intersperse blankLine
                             |> map indent
                         )
                     |> expressionParens AmbiguousEnd context -- TODO: not tested

@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wall #-}
 module Box
-  ( Line, identifier, keyword, punc, literal, row, space
+  ( Line, identifier, keyword, punc, literal, row, space, tab
   , Box(SingleLine, MustBreak), blankLine, line, mustBreak, stack', stack1, andThen
   , isLine, allSingles, lineLength
   , indent, prefix, addSuffix
@@ -24,7 +24,7 @@ data Line
     = Text T.Text
     | Row [Line]
     | Space
-    | Tab
+    | Tab deriving Show
 
 
 identifier :: String -> Line
@@ -57,6 +57,9 @@ space :: Line
 space =
     Space
 
+tab :: Line
+tab = Tab
+
 
 {-
 Box contains Lines (at least one - can't be empty).
@@ -76,7 +79,7 @@ Sometimes (see `prefix`) the first line of Stack
 data Box
     = SingleLine Line
     | Stack Line Line [Line]
-    | MustBreak Line
+    | MustBreak Line deriving Show
 
 
 blankLine :: Box
