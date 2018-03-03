@@ -20,6 +20,7 @@ import Signal exposing (foldp, map)
 import String
 
 
+
 ----------------
 --- Comments ---
 ----------------
@@ -78,10 +79,12 @@ comments5 =
     if True then
         -- do the right thing
         ()
+
     else if False then
         -- do something
         -- redundant
         ()
+
     else
         {- do the wrong thing -}
         ()
@@ -127,6 +130,8 @@ expressionDefinition {- F -} _ {- G -} _ =
 
 
 infix {- A -} 7 {- B -} ===
+
+
 (===) =
     always
 

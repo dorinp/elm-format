@@ -4,11 +4,16 @@ Features promoted from 0.7.0-exp:
   - Imports are now sorted and duplicate imports are merged
   - `exposing` clauses in module headers are now sorted
   - The body of `let` expressions are no longer indented
-  - Unnecessary parentheses are now removed (expect in binary operator expressions)
+  - Unnecessary parentheses are now removed (except in binary operator expressions)
 
 Bug fixes:
   - Parentheses are not considered unnecessary if removing them would cause a comment to move to a different AST node
   - Multiline `@docs` lines in markdown are now handled correctly
+
+Syntax changes:
+  - Infix operator precedence and associativity declarations are now grouped together
+  - `if` expressions now have blank lines between clauses
+  - Comments immediately following `import`s now have spacing consistent with other top-level comments
 
 Other changes:
   - Removed support for Elm 0.16

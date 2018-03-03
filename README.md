@@ -7,7 +7,7 @@
 >
 > **The format produced by elm-format may change significantly before the 1.0.0 release.**  If this will cause problems for you, please refrain from using elm-format during the alpha- and beta-test periods.
 
-`elm-format` formats [Elm](http://elm-lang.org) source code according to a standard set of rules. It is inspired by the popular [gofmt](https://blog.golang.org/go-fmt-your-code).
+`elm-format` formats [Elm](http://elm-lang.org) source code according to a standard set of rules based on [the official Elm Style Guide](http://elm-lang.org/docs/style-guide). It is inspired by the popular [gofmt](https://blog.golang.org/go-fmt-your-code).
 
 The benefits of `elm-format`:
  - It makes code **easier to write**, because you never have to worry about minor formatting concerns while powering out new code.
@@ -39,7 +39,7 @@ elm-format --help  # See other command line options
 ### Experimental version
 
 The latest version of `elm-format` contains experimental features that may or may not appear in future releases.
-If you are able to some amount of instability on your Elm projects,
+If you are able to tolerate some amount of instability on your Elm projects,
 you can help with the development of `elm-format` by using the experimental version and providing feedback.
 You can give feedback about the latest experimental version [here](https://goo.gl/forms/kLdTN1yikfOI8ZuA3).
 
@@ -116,22 +116,14 @@ Find your editor in the table below.  The recommended plugin for each editor is 
     <td>:warning: no installation instructions</td>
   </tr>
   <tr>
-    <td rowspan=2>Visual Studio Code</td>
+    <td rowspan=1>Visual Studio Code</td>
     <td>:trophy: <a href="https://marketplace.visualstudio.com/items?itemName=sbrink.elm">Elm Language Support</a></td>
     <td>:warning: <a href="#visual-studio-code-installation">3 steps</a></td>
-    <td>❔ TBD</td>
+    <td>:x: formatting moves cursor to end of file</td>
     <td>:warning: requires configuration</td>
     <td>❔ TBD</td>
     <td>❔ TBD</td>
   </tr>
-  <tr>
-    <!-- Visual Studio Code -->
-    <td><a href="https://marketplace.visualstudio.com/items?itemName=abadi199.elm-format">VSCode Elm Format</a></td>
-    <td>:warning: <a href="#vscode-elm-format-installation">3 steps</a></td>
-    <td>❔ TBD</td>
-    <td>:warning: requires configuration</td>
-    <td>❔ TBD</td>
-    <td>❔ TBD</td>
   </tr>
   <tr>
     <td rowspan=1>Sublime Text</td>
@@ -252,28 +244,25 @@ The default behavior of `elm-format`-approved plugins is to format Elm files on 
 
 ### Visual Studio Code installation
 
+> Note: If you previously installed a VSCode extension called "elm-format", uninstall it (it is deprecated, and the "elm" extension now provides elm-format integration).
+
 1. Install elm-format
-1. Install Elm tools for VSCode
+1. Install [Elm Language Support](https://marketplace.visualstudio.com/items?itemName=sbrink.elm) for VSCode
 
     ```bash
     ext install elm
     ```
 
-1. SHIFT-ALT-F will format the current file
+1. Configure the extension to format on save:
 
-
-### VSCode Elm Format installation
-
-1. Install elm-format
-1. Install VSCode Elm Format
-
-    ```bash
-    ext install elm-format
+    1. Go to `Preferences -> Settings` in the menu
+    1. In your User Settings, update the following value:
+    
     ```
-
-1. You can run elm-format by using the `Elm: Format` command
-1. You can also run elm-format whenever you save the file by adding `formatOnSave: true` option to your [settings.json](https://code.visualstudio.com/docs/customization/userandworkspace) file.
-
+    "[elm]": {
+        "editor.formatOnSave": true
+    },
+    ```
 
 
 ### Sublime Text installation

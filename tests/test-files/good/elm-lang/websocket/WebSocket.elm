@@ -35,6 +35,7 @@ import Time exposing (Time)
 import WebSocket.LowLevel as WS
 
 
+
 -- COMMANDS
 
 
@@ -331,6 +332,7 @@ after : Int -> Task x ()
 after backoff =
     if backoff < 1 then
         Task.succeed ()
+
     else
         Process.sleep (toFloat (10 * 2 ^ backoff))
 

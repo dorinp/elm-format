@@ -85,6 +85,7 @@ import Random.Extra as Random
 import Trampoline exposing (Trampoline(..), trampoline)
 
 
+
 -----------
 -- TYPES --
 -----------
@@ -264,6 +265,7 @@ claim name actualStatement expectedStatement investigator =
                         -- that we have failed to find a counter example.
                         ------------------------------------------------------------------
                         Done (Ok numberOfChecks)
+
                     else
                         let
                             --------------------------------------------------------------
@@ -290,6 +292,7 @@ claim name actualStatement expectedStatement investigator =
                         in
                         if actual == expected then
                             Continue (\() -> originalCounterExample' nextSeed (currentNumberOfChecks + 1))
+
                         else
                             Done (Err ( value, actual, expected, nextSeed, currentNumberOfChecks + 1 ))
 
