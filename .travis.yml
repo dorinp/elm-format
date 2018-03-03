@@ -3,6 +3,7 @@ sudo: false
 
 language: c
 
+os: osx
 
 cache:
   directories:
@@ -18,7 +19,7 @@ addons:
 before_install:
 - mkdir -p ~/.local/bin
 - export PATH=$HOME/.local/bin:$PATH
-- travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+- travis_retry curl -L https://www.stackage.org/stack/osx-x86_64 | tar xz --strip-components=1 -C ~/.local/bin
 - stack --version
 
 
@@ -29,4 +30,16 @@ install:
 
 script:
 - stack build
-- ./tests/run-tests.sh
+- mv "$(stack path --local-install-root)/bin/elm-format-0.18" "$(stack path --local-install-root)/bin/elm-format"
+- tar -C "$(stack path --local-install-root)/bin" -cvf "$TRAVIS_BUILD_DIR/elm-format-osx.tar.gz" elm-format
+
+deploy:
+  provider: releases
+  api_key:
+    secure: mVlq1J8NqlR2fSQuYMg6+y9zvo7jmuPxZIuxiJvTCcFI9jojoKd+5W6BE98EcwqBQIwiQSZtXjKhiachWFIckylHdDj0PPk4rhJp6FRSKjUVWEvownQqQV0mH2T6ApM5alvYESC99pNfnZy5VWnEfvo99aona4InsiGlgHSz0MfYlO+Fn0tmHqjmgscEevbzalwWJc49HYVq8c2mbUYRUtnWcdgp/F+NW+PtlB5N1bD/xWT1B99SoU/p8r++y5lyT8ZJMhFhLGNtgv/xyj6q8RLNHw6ft+IbsSfEz2tc8UyhWf+lkEahZIaFqDw0ku1O4X9b5Q9/IFDJp1upNNlgq6gYFdMQnXoRNR41/t8tJs4D5MatEzGTw+JhwqWnLMXFNNpSLThhyC0eOjY55+TR0nmCZmRqwu6VjMkrUvOYh7twcd/hLwHJTLz9QVnBLpT+ZdMw9lgDFaMzoWghEYBfzXn4FCm2+xP1Gz8xfvqKv/FGRx6JA/81g9CujDtoiY/AsfRtjP3ZFJiKfPGvCGsykAio6HeVb80cSh2wsqyXj+14DiJAsH9Wi74OSDJBee0ePkUGY8N/PKSlQESgfYU3xrke8XW3eLpDaLlMLuGg90O7qfr4MObwdzYbjT4r6eVKZGaVm0XDC9bYDPQ4KkNQ7rUZYGc6eKy7lkmcWqDbIqc=
+  file: elm-format-osx.tar.gz
+  overwrite: true
+  skip_cleanup: true
+  on:
+    repo: dorinp/elm-format
+    tags: true

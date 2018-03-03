@@ -338,7 +338,7 @@ formatModule elmVersion modu =
             case AST.Module.body modu of
                 [] -> 0
                 AST.Declaration.BodyComment _ : _ -> 3
-                _ -> 2
+                _ -> 1
     in
       stack1 $
           concat
@@ -808,8 +808,11 @@ formatDefinition elmVersion name args comments expr =
         [ map formatComment comments
         , [ formatExpression elmVersion SyntaxSeparated expr ]
         ]
+    multiline = case body of
+      SingleLine l  -> lineLength 0 l > 60
+      _             -> True
   in
-    ElmStructure.definition "=" False
+    ElmStructure.definition "=" multiline
       (formatPattern elmVersion True name)
       (map (\(x,y) -> formatCommented' x (formatPattern elmVersion True) y) args)
       body
@@ -1086,8 +1089,7 @@ formatExpression elmVersion context aexpr =
                 formatIf if'
                     |> andThen (map formatElseIf elseifs)
                     |> andThen
-                        [ blankLine
-                        , line $ keyword "else"
+                        [ line $ keyword "else"
                         , indent $ formatCommented_ True (formatExpression elmVersion SyntaxSeparated) (AST.Commented elsComments els [])
                         ]
                     |> expressionParens AmbiguousEnd context
