@@ -1,5 +1,9 @@
-[![Build Status](https://travis-ci.org/avh4/elm-format.svg?branch=master)](https://travis-ci.org/avh4/elm-format)
-[![latest version: 0.7.0-exp](https://img.shields.io/badge/version-0.7.0--exp-orange.svg)](https://github.com/avh4/elm-format/releases/tag/0.7.0-exp)
+# This is a fork of [elm-format](https://github.com/avh4/elm-format)
+
+It aims to have a more compact code representation and waste less vertical space
+
+[![Build Status](https://travis-ci.org/dorinp/elm-format.svg?branch=master)](https://travis-ci.org/dorinp/elm-format)
+[![latest version: 0.7.0-fork](https://img.shields.io/badge/version-0.7.0--fork-orange.svg)](https://github.com/dorinp/elm-format/releases/tag/0.7.0-fork)
 
 # elm-format
 
